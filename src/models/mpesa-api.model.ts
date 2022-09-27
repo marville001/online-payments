@@ -2,6 +2,8 @@
 import { Buffer } from 'buffer';
 import axios from "axios";
 import { getCurrentTimeStamp } from "../utils";
+import { IPaymentItem } from '../interface';
+// import { PaymentItem } from '../interface';
 class MpesaApi {
 	// mpesaApi: any;
 	consumerKey = process.env.MPESA_CONSUMER_KEY ?? "";
@@ -44,41 +46,42 @@ class MpesaApi {
 	};
 
 
-	async lipaNaMpesaOnline(token: string) {
+	async lipaNaMpesaOnline(token: string, data:IPaymentItem) {
 		return new Promise(async (resolve, reject) => {
-
-			let auth = `Bearer ${token}`;
 
 			//getting the timestamp
 			let timestamp = getCurrentTimeStamp();
 
-			const shortCode = process.env.MPESA_LIPA_NA_MPESA_SHORT_CODE
+			const shortCode = process.env.MPESA_LIPA_NA_MPESA_SHORT_CODE ?? 0
+			// const passkey = this.consumerKey
 			const passkey = process.env.MPESA_LIPA_NA_MPESA_PASS_KEY
 
-			let password = Buffer.from(`${shortCode}${passkey}${timestamp}`).toString('base64');
-			let callBackUrl = "your-ngrok-url/mpesa/lipa-na-mpesa-callback";
+			let password = Buffer.from(`${data.shortCode}${passkey}${timestamp}`).toString('base64');
+			let callBackUrl = "https://b292-197-156-142-157.in.ngrok.io/api/v1/m-pesa/hook";
 
 			try {
 
-				let data = await axios.post(process.env.MPESA_LIPA_NA_MPESA_URL ?? "", {
-					"BusinessShortCode": shortCode,
+				const options = {
+					"BusinessShortCode": data.shortCode,
 					"Password": password,
 					"Timestamp": timestamp,
 					"TransactionType": "CustomerPayBillOnline",
-					"Amount": '1',
-					"PartyA": "254700207054",
-					"PartyB": process.env.MPESA_LIPA_NA_MPESA_SHORT_CODE,
-					"PhoneNumber": "254700207054",
-					"CallBackURL": callBackUrl,
-					"AccountReference": "lipa-na-mpesa-tutorial",
-					"TransactionDesc": "Testing lipa na mpesa functionality"
-				}, {
+					"Amount": data.amount,
+					"PartyA": data.sender,
+					"PartyB": data.shortCode,
+					"PhoneNumber": data.sender,
+					"CallBackURL": data.callbackUrl,
+					"AccountReference": data.reference,
+					"TransactionDesc": data.description
+				}
+
+				let response = await axios.post(process.env.MPESA_LIPA_NA_MPESA_URL ?? "", options, {
 					"headers": {
-						"Authorization": auth
+						"Authorization": `Bearer ${token}`
 					}
 				});
 
-				resolve(data)
+				resolve(response)
 
 			} catch (err: any) {
 				// const error = err['response']['statusText']
