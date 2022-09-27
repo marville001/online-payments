@@ -3,6 +3,6 @@ import { stkPushController } from "../controllers/mpesa.controllers"
 
 const router = express.Router()
 
-router.post('stk-push', stkPushController)
+router.get('/stk-push', stkPushController)
 
 export default router
