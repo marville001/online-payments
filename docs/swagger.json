@@ -21,17 +21,11 @@
     "consumes": ["application/json"],
     "produces": ["application/json"],
     "paths": {
-        "/m-pesa": {
-            "post": {
+        "/m-pesa/stk-push": {
+            "get": {
                 "tags": ["Mpesa"],
                 "description": "STK Push Mpesa",
-                "parameters": [
-                    {
-                        "name": "details",
-                        "in": "body",
-                        "description": "Payment Details"
-                    }
-                ],
+                "parameters": [],
                 "produces": ["application/json"],
                 "responses": {
                     "200": {
