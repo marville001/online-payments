@@ -4,12 +4,11 @@
         "module": "commonjs",
         "jsx": "preserve",
         "strict": true,
+        "resolveJsonModule": true,
         "esModuleInterop": true,
         "lib": ["dom", "es2018", "esnext.asynciterable"],
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
-        "allowJs": true,
-        "checkJs": false,
         "outDir": "./dist",
         "strictPropertyInitialization": false,
         "paths": {
