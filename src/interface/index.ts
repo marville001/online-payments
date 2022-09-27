@@ -5,5 +5,4 @@ export interface IPaymentItem {
 	amount: number;
 	callbackUrl: string;
 	sender: string;
-
 }
