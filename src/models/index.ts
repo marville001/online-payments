@@ -1,2 +1,2 @@
 
-export * as default from "./mpesa-api.model"
+export { default as MpesaApi } from "./mpesa-api.model"
