@@ -1,11 +1,11 @@
+import dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
-import dotenv from "dotenv";
 import swaggerUi from 'swagger-ui-express'
 import swaggerDocument from "../docs/swagger.json";
 
 // Import Routes
-import { mpesaRoutes } from "./routes"
+import { mpesaRoutes } from "./modules/mpesa/index"
 
 dotenv.config();
 
